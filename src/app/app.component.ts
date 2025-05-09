@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ProductService } from './services/product.service'; // Ajusta la ruta según tu estructura
+import { ProductService } from './services/product.service';
 
 @Component({
   standalone: true,
@@ -13,6 +13,9 @@ import { ProductService } from './services/product.service'; // Ajusta la ruta s
   ]
 })
 export class AppComponent implements OnInit {
+  title(title: any) {
+    throw new Error('Method not implemented.');
+  }
   products: any[] = [];
   selectedProduct: any = null;
 

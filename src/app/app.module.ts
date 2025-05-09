@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 
 @NgModule({
-  declarations: [], // Eliminar AppComponent de las declaraciones
+  declarations: [], 
   imports: [BrowserModule, HttpClientModule, AppComponent]
 })
 export class AppModule {}
