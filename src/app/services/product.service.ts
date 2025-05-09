@@ -10,16 +10,15 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getProducts(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
   }
 
   getProductById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  saveExternalProduct(id: number): Observable<any> {
+  saveProduct(id: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${id}/guardar`, {});
   }
-
 }

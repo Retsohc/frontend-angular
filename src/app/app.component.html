@@ -1,11 +1,10 @@
-<h2>Lista de productos externos</h2>
-<ul>
-  <li *ngFor="let product of products" (click)="selectProduct(product)">
-    {{ product.title }}
-  </li>
-</ul>
+<header>
+  <h1>Productos</h1>
+</header>
 
-<div *ngIf="selectedProduct">
-  <h3>Seleccionado: {{ selectedProduct.title }}</h3>
-  <button (click)="saveProduct()">Guardar en base de datos</button>
-</div>
+<main>
+  <router-outlet></router-outlet>
+
+<footer>
+  <p>Aplicación de productos - Angular & Flask</p>
+</footer>

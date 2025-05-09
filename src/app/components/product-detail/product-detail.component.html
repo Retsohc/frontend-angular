@@ -1,0 +1,14 @@
+<div class="container">
+  <div *ngIf="loading" class="loading">Cargando producto...</div>
+  
+  <div *ngIf="error" class="error">{{ error }}</div>
+  
+  <div *ngIf="!loading && !error && product" class="product-detail">
+    <h2>{{ product.title }}</h2>
+    <p><strong>Precio:</strong> ${{ product.price }}</p>
+    <p><strong>Categoría:</strong> {{ product.category }}</p>
+    <p><strong>Descripción:</strong> {{ product.description }}</p>
+    <button (click)="saveProduct()">Guardar en BD</button>
+    <a routerLink="/" class="back-link">Volver a la lista</a>
+  </div>
+</div>
