@@ -1,86 +1,52 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductService } from './services/product.service';
-import { environment } from './services/environment';
-import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ProductService } from './services/product.service'; // Ajusta la ruta según tu estructura
 
 @Component({
+  standalone: true,
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, FormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [
+    CommonModule,
+    HttpClientModule
+  ]
 })
-export class AppComponent {
-  title(title: any) {
-    throw new Error('Method not implemented.');
-  }
+export class AppComponent implements OnInit {
   products: any[] = [];
   selectedProduct: any = null;
-  isEditing: boolean = false;
-  private apiUrl = environment.apiUrl;
 
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    this.getProducts();
   }
 
-  loadProducts(): void {
-    this.productService.getProducts().subscribe(
-      (data) => {
-        this.products = data;
+  getProducts(): void {
+    this.productService.getProducts().subscribe({
+      next: (data: any) => {
+        this.products = data.data;
       },
-      (error) => {
-        console.error('Error al cargar los productos:', error);
+      error: (error: any) => {
+        console.error('Error al obtener productos:', error);
       }
-    );
+    });
   }
 
-  viewProduct(id: number): void {
-    this.productService.getProductById(id).subscribe(
-      (data) => {
-        this.selectedProduct = data;
-        this.isEditing = false;
-      },
-      (error) => {
-        console.error('Error al cargar el producto:', error);
-      }
-    );
-  }
-
-  editProduct(product: any): void {
-    this.selectedProduct = { ...product };
-    this.isEditing = true; 
+  selectProduct(product: any): void {
+    this.selectedProduct = product;
   }
 
   saveProduct(): void {
-    this.productService
-      .updateProduct(this.selectedProduct.id, this.selectedProduct)
-      .subscribe(
-        (data) => {
-          console.log('Producto actualizado:', data);
-          this.loadProducts();
-          this.selectedProduct = null;
+    if (this.selectedProduct) {
+      this.productService.saveExternalProduct(this.selectedProduct.id).subscribe({
+        next: (data: any) => {
+          console.log('Producto guardado:', data);
         },
-        (error) => {
-          console.error('Error al actualizar el producto:', error);
+        error: (error: any) => {
+          console.error('Error al guardar producto:', error);
         }
-      );
-  }
-
-  deleteProduct(id: number): void {
-    if (confirm('¿Estás seguro de eliminar este producto?')) {
-      this.productService.deleteProduct(id).subscribe(
-        (data) => {
-          console.log('Producto eliminado:', data);
-          this.loadProducts();
-          this.selectedProduct = null;
-        },
-        (error) => {
-          console.error('Error al eliminar el producto:', error);
-        }
-      );
+      });
     }
   }
 }
